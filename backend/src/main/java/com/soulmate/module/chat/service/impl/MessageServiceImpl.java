@@ -123,6 +123,12 @@ public class MessageServiceImpl implements MessageService {
                 }
                 log.info("【工作流路径】合并知识库引用: 最终引用={}", referencedKbNames);
             }
+            
+            // 如果工作流执行没有返回有效响应（例如工作流中没有LLM节点），回退到直接LLM调用
+            if (responseContent == null || responseContent.isEmpty()) {
+                log.warn("【工作流路径】工作流未生成有效响应，回退到直接LLM调用");
+                responseContent = directLlmCall(agent, request.getContent(), historyMessages, agentKnowledgeContext);
+            }
         } else {
             log.info("【直接调用路径】智能体未配置工作流，使用直接LLM调用");
             // 使用直接LLM调用

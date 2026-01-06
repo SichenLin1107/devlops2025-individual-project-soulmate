@@ -40,11 +40,11 @@ INSERT INTO sys_user (id, username, password, role, nickname, avatar, bio, statu
 -- 2. LLM 提供商与模型
 -- ============================================
 
--- LLM 提供商（api_key 请在部署后通过管理后台修改为真实密钥）
+-- LLM 提供商（已预置测试 API Key，可直接使用）
 INSERT INTO llm_provider (id, name, api_base, api_key, is_active, created_at) VALUES
-('prv_deepseek', 'DeepSeek', 'https://api.deepseek.com/v1', 'sk-your-deepseek-api-key', 1, NOW()),
-('prv_zhipu', '智谱AI', 'https://open.bigmodel.cn/api/paas/v4', 'your-zhipu-api-key', 1, NOW()),
-('prv_qwen', '通义千问', 'https://dashscope.aliyuncs.com/compatible-mode/v1', 'sk-your-qwen-api-key', 1, NOW()),
+('prv_deepseek', 'DeepSeek', 'https://api.deepseek.com/v1', 'sk-192531ad13d14154bd497525dc0264de', 1, NOW()),
+('prv_zhipu', '智谱AI', 'https://open.bigmodel.cn/api/paas/v4', 'bb4ea46c4b254cd2b7cafecb382dc8c9.JJnKOPv4FZHdCbKE', 1, NOW()),
+('prv_qwen', '通义千问', 'https://dashscope.aliyuncs.com/compatible-mode/v1', 'sk-a0c14831ae154be8802c1c5bf02a803a', 1, NOW()),
 ('prv_doubao', '豆包', 'https://ark.cn-beijing.volces.com/api/v3', 'your-doubao-api-key', 0, NOW());
 
 -- LLM 模型（对话模型）
