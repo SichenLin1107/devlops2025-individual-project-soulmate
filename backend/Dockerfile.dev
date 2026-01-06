@@ -1,0 +1,55 @@
+FROM maven:3.9-eclipse-temurin-17-alpine
+
+# 设置工作目录
+WORKDIR /app
+
+# 安装调试工具和中文字体支持
+RUN apk add --no-cache curl netcat-openbsd tzdata && \
+    ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    echo "Asia/Shanghai" > /etc/timezone
+
+# 复制 pom.xml 和 Maven Wrapper
+COPY pom.xml .
+COPY mvnw .
+COPY .mvn .mvn
+
+# 下载依赖
+RUN chmod +x mvnw && \
+    ./mvnw dependency:go-offline -B \
+        -s .mvn/settings.xml \
+        -Dmaven.wagon.http.retryHandler.count=5 \
+        -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
+        -Dmaven.wagon.http.readTimeout=300000 \
+        -Dmaven.wagon.http.connectionTimeout=300000 || \
+    (echo "First attempt failed, retrying..." && \
+     sleep 5 && \
+     ./mvnw dependency:go-offline -B \
+         -s .mvn/settings.xml \
+         -Dmaven.wagon.http.retryHandler.count=5 \
+         -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
+         -Dmaven.wagon.http.readTimeout=300000 \
+         -Dmaven.wagon.http.connectionTimeout=300000)
+
+# 复制源代码
+COPY src ./src
+
+# 设置环境变量
+ENV MAVEN_OPTS="-Xmx1024m" \
+    JAVA_OPTS="-Xms256m -Xmx512m -Djava.security.egd=file:/dev/./urandom" \
+    SPRING_PROFILES_ACTIVE=dev \
+    DEBUG_PORT=5005 \
+    ENABLE_DEBUG=false
+
+EXPOSE 8081 5005
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8081/api/v1/health || exit 1
+
+ENTRYPOINT ["sh", "-c", "\
+    if [ \"$ENABLE_DEBUG\" = \"true\" ]; then \
+        echo \"Starting in DEBUG mode on port $DEBUG_PORT\"; \
+        ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev -Dspring-boot.run.jvmArguments=\"-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:$DEBUG_PORT $JAVA_OPTS\"; \
+    else \
+        echo \"Starting in NORMAL mode\"; \
+        ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev -Dspring-boot.run.jvmArguments=\"$JAVA_OPTS\"; \
+    fi"]

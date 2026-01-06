@@ -1,0 +1,47 @@
+# 构建阶段
+FROM maven:3.9-eclipse-temurin-17-alpine AS build
+WORKDIR /app
+
+# 复制 pom.xml 和 Maven Wrapper
+COPY pom.xml .
+COPY mvnw .
+COPY .mvn .mvn
+
+# 下载依赖（利用 Docker 缓存）
+RUN chmod +x mvnw && ./mvnw dependency:go-offline -B
+
+# 复制源代码并构建
+COPY src ./src
+RUN ./mvnw clean package -DskipTests -B
+
+# 运行阶段
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+
+# 安装必要工具（用于健康检查）
+RUN apk add --no-cache curl tzdata && \
+    ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    echo "Asia/Shanghai" > /etc/timezone
+
+# 从构建阶段复制 JAR
+COPY --from=build /app/target/soulmate-1.0.0.jar app.jar
+
+# 创建日志目录
+RUN mkdir -p /app/logs
+
+# 设置环境变量
+ENV TZ=Asia/Shanghai \
+    JAVA_OPTS="-Xms512m -Xmx1g -Djava.security.egd=file:/dev/./urandom" \
+    SPRING_PROFILES_ACTIVE=prod
+
+# 创建非root用户（安全最佳实践）
+RUN addgroup -g 1001 -S appgroup && \
+    adduser -u 1001 -S appuser -G appgroup && \
+    chown -R appuser:appgroup /app
+USER appuser
+
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8080/actuator/health || exit 1
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]

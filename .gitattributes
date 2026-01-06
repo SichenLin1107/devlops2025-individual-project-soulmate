@@ -1,0 +1,74 @@
+# ============================
+# SoulMate 项目 Git 属性配置
+# 强制所有文本文件使用 LF 换行符
+# ============================
+
+# 默认所有文件使用 LF
+* text=auto eol=lf
+
+# 明确指定文本文件类型
+*.sh text eol=lf
+*.bash text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.vue text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.less text eol=lf
+*.html text eol=lf
+*.htm text eol=lf
+*.xml text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.sql text eol=lf
+*.py text eol=lf
+*.java text eol=lf
+*.properties text eol=lf
+*.conf text eol=lf
+*.config text eol=lf
+*.env text eol=lf
+*.example text eol=lf
+Dockerfile* text eol=lf
+Makefile text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+.dockerignore text eol=lf
+.editorconfig text eol=lf
+mvnw text eol=lf
+*.gradle text eol=lf
+
+# Windows 批处理文件保持 CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# 二进制文件
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.svg binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.otf binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.rar binary
+*.jar binary
+*.war binary
+*.ear binary
+*.class binary
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary

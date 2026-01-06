@@ -1,0 +1,23 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# 优先复制 npm 配置和依赖声明，充分利用构建缓存
+COPY .npmrc* ./
+COPY package*.json ./
+
+# 使用国内镜像源安装依赖（如无网络问题也可去掉 --registry）
+RUN npm install --registry=https://registry.npmmirror.com
+
+# 复制源码
+COPY . .
+
+ENV NODE_ENV=development \
+    VITE_PORT=3000 \
+    VITE_HOST=0.0.0.0
+
+EXPOSE 3000
+
+# 以开发模式启动 Vite Dev Server，端口通过环境变量控制
+# host 由 VITE_HOST / vite.config.js 控制（Docker 默认 0.0.0.0）
+CMD ["sh", "-c", "npm run dev -- --port ${VITE_PORT:-3000}"]

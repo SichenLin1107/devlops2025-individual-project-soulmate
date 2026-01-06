@@ -1,0 +1,113 @@
+# ============================
+# RAG Service Python .gitignore
+# ============================
+
+# ============================
+# Python 虚拟环境
+# ============================
+venv/
+.venv/
+ENV/
+env/
+.env/
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+
+# ============================
+# Python 编译文件
+# ============================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# ============================
+# 环境变量文件
+# ============================
+.env
+.env.local
+.env.dev
+.env.prod
+.env.*.local
+
+# ============================
+# IDE 配置
+# ============================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.spyderproject
+.spyproject
+.ropeproject
+
+# ============================
+# 测试和覆盖率
+# ============================
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# ============================
+# 日志文件
+# ============================
+logs/
+*.log
+
+# ============================
+# ChromaDB 数据（运行时生成）
+# ============================
+data/
+*.sqlite3
+chroma/
+
+# ============================
+# 临时文件
+# ============================
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# ============================
+# 操作系统文件
+# ============================
+.DS_Store
+.DS_Store?
+Thumbs.db
+Desktop.ini
+
+# ============================
+# Jupyter Notebook
+# ============================
+.ipynb_checkpoints/
+*.ipynb
+
+# ============================
+# mypy / pytype / Pyre
+# ============================
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+.pyre/
+

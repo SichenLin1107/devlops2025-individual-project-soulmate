@@ -1,0 +1,71 @@
+# ============================
+# Backend Java Spring Boot Docker Ignore
+# ============================
+
+# Git 相关
+.git/
+.gitignore
+.gitattributes
+
+# IDE 配置
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.project
+.classpath
+.settings/
+
+# Maven 构建输出（Docker 构建时会重新生成）
+target/
+!target/.gitkeep
+
+# 日志文件（运行时生成）
+logs/
+*.log
+
+# 上传文件目录（使用数据卷挂载）
+uploads/
+!uploads/.gitkeep
+
+# 临时文件
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# 测试文件（生产镜像不需要）
+src/test/
+
+# 文档文件
+*.md
+!README.md
+HELP.md
+docs/
+
+# Docker 相关文件（避免递归）
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# 环境变量文件
+.env
+.env.local
+.env.*.local
+
+# 配置文件备份
+*.bak
+*.backup
+*.orig
+
+# Maven Wrapper JAR
+.mvn/wrapper/maven-wrapper.jar
+
+# 测试覆盖率
+.nyc_output/
+coverage/
+*.code-workspace

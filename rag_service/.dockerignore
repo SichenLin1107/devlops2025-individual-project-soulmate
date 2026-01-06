@@ -1,0 +1,88 @@
+# ============================
+# RAG Service Docker Ignore
+# ============================
+
+# Git 相关
+.git/
+.gitignore
+.gitattributes
+
+# Python 虚拟环境（Docker 会重新安装依赖）
+venv/
+.venv/
+ENV/
+env/
+.env/
+
+# Python 编译缓存
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+
+# IDE 配置
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# 环境变量文件（运行时提供）
+.env
+.env.local
+.env.dev
+.env.prod
+.env.*.local
+
+# 测试文件（生产镜像不需要）
+tests/
+test/
+*.test.py
+*_test.py
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# 文档文件
+*.md
+!README.md
+docs/
+
+# ChromaDB 数据（使用数据卷挂载）
+data/
+*.sqlite3
+chroma/
+
+# 日志文件
+logs/
+*.log
+
+# Docker 相关文件（避免递归）
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# 临时文件
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+

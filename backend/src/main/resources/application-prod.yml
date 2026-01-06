@@ -1,0 +1,60 @@
+server:
+  port: ${SERVER_PORT:8080}
+  address: ${SERVER_ADDRESS:0.0.0.0}
+  servlet:
+    context-path: /
+
+spring:
+  devtools:
+    restart:
+      enabled: false
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:mysql://mysql:3306/soulmate_db?useSSL=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true}
+    username: ${DATASOURCE_USERNAME:root}
+    password: ${DATASOURCE_PASSWORD:change_this_in_production}
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 50
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 900000
+
+logging:
+  level:
+    root: ${LOG_LEVEL:WARN}
+    com.soulmate: ${APP_LOG_LEVEL:INFO}
+    com.soulmate.module.*.mapper: ${MAPPER_LOG_LEVEL:WARN}
+  file:
+    name: logs/application.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
+
+springdoc:
+  api-docs:
+    enabled: ${ENABLE_SWAGGER:false}
+  swagger-ui:
+    enabled: ${ENABLE_SWAGGER:false}
+
+mybatis:
+  configuration:
+    log-impl: ${MYBATIS_LOG_IMPL:}
+
+jwt:
+  secret: ${JWT_SECRET:change_this_jwt_secret_in_production}
+  expiration: ${JWT_EXPIRATION:86400000}
+
+rag:
+  service:
+    base-url: ${RAG_SERVICE_URL:http://rag-service:8001}
+    timeout: ${RAG_TIMEOUT:60000}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never

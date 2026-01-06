@@ -1,0 +1,62 @@
+server:
+  port: ${SERVER_PORT:8081}
+  address: ${SERVER_ADDRESS:0.0.0.0}
+
+spring:
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:mysql://localhost:3307/soulmate_db_dev?useSSL=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true}
+    username: ${DATASOURCE_USERNAME:root}
+    password: ${DATASOURCE_PASSWORD:dev123456}
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 10
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+logging:
+  level:
+    root: ${LOG_LEVEL:INFO}
+    com.soulmate: ${APP_LOG_LEVEL:DEBUG}
+    com.soulmate.module.*.mapper: ${MAPPER_LOG_LEVEL:DEBUG}
+    org.springframework.web: DEBUG
+  pattern:
+    console: '%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
+
+springdoc:
+  api-docs:
+    enabled: ${ENABLE_SWAGGER:true}
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: ${ENABLE_SWAGGER:true}
+    path: /swagger-ui.html
+    url: /v3/api-docs
+    disable-swagger-default-url: true
+
+mybatis:
+  configuration:
+    log-impl: ${MYBATIS_LOG_IMPL:org.apache.ibatis.logging.stdout.StdOutImpl}
+
+jwt:
+  secret: ${JWT_SECRET:dev_soulmate_jwt_secret_2025_32chars_min}
+  expiration: ${JWT_EXPIRATION:86400000}
+
+rag:
+  service:
+    base-url: ${RAG_SERVICE_URL:http://localhost:8000}
+    timeout: ${RAG_TIMEOUT:60000}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+      

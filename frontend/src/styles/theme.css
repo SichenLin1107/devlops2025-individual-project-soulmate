@@ -1,0 +1,413 @@
+:root {
+  /* 主色调 */
+  --el-color-primary: #4A90A4;
+  --el-color-primary-light-3: #6BA4B8;
+  --el-color-primary-light-5: #8CB8CC;
+  --el-color-primary-light-7: #ADCCE0;
+  --el-color-primary-light-8: #CEE0F4;
+  --el-color-primary-light-9: #EFF4F8;
+  --el-color-primary-dark-2: #2E5A68;
+
+  /* 辅助色调 */
+  --warm-beige: #F5F1EB;
+  --soft-cream: #FAF7F2;
+  --gentle-sand: #E8E2D5;
+  --cozy-taupe: #D4C4B0;
+  --warm-gray: #A8998A;
+  --deep-taupe: #8B7D6B;
+
+  /* 功能色调 */
+  --el-color-success: #7BA05B;
+  --el-color-warning: #D4A574;
+  --el-color-danger: #C07B7B;
+  --el-color-info: #7B8FC0;
+
+  /* 背景色 */
+  --el-bg-color: #FEFEFE;
+  --el-bg-color-page: #FAF7F2;
+  --el-bg-color-overlay: #FEFEFE;
+
+  /* 文本颜色 */
+  --el-text-color-primary: #3A3A3A;
+  --el-text-color-regular: #5A5A5A;
+  --el-text-color-secondary: #7A7A7A;
+  --el-text-color-placeholder: #B5B5B5;
+  --el-text-color-disabled: #D0D0D0;
+  --el-fill-color-disabled: #F5F5F5;
+  --el-border-color-disabled: #E0E0E0;
+
+  /* 边框颜色 */
+  --el-border-color: #E8E8E8;
+  --el-border-color-light: #F0F0F0;
+  --el-border-color-lighter: #F8F8F8;
+  --el-border-color-extra-light: #FCFCFC;
+
+  /* 背景渐变 */
+  --app-bg-gradient: linear-gradient(135deg, var(--soft-cream) 0%, var(--warm-beige) 100%);
+  --app-warm-gradient: linear-gradient(135deg, var(--warm-beige) 0%, var(--gentle-sand) 100%);
+  --app-card-bg: rgba(255, 255, 255, 0.9);
+  --app-glass-bg: rgba(255, 255, 255, 0.8);
+  --app-warm-card-bg: rgba(250, 247, 242, 0.8);
+  
+  /* 主要渐变色 */
+  --app-primary-gradient: linear-gradient(135deg, var(--el-color-primary) 0%, var(--el-color-primary-light-3) 100%);
+  --app-header-gradient: linear-gradient(135deg, var(--soft-cream) 0%, var(--warm-beige) 100%);
+
+  /* 阴影 */
+  --el-box-shadow: 0px 4px 20px rgba(74, 144, 164, 0.1), 0px 2px 8px rgba(0, 0, 0, 0.05);
+  --el-box-shadow-light: 0px 2px 12px rgba(0, 0, 0, 0.04);
+  --warm-shadow: 0px 4px 16px rgba(74, 144, 164, 0.12), 0px 2px 8px rgba(0, 0, 0, 0.06);
+  --floating-shadow: 0px 8px 24px rgba(74, 144, 164, 0.15), 0px 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 全局样式 */
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--app-bg-gradient);
+  color: var(--el-text-color-primary);
+  font-family: 'Nunito', 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 背景图案 */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 25% 75%, rgba(74, 144, 164, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 75% 25%, rgba(168, 153, 138, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+#app {
+  min-height: 100%;
+  position: relative;
+}
+
+/* Common utilities */
+.text-primary-gradient {
+  background: var(--app-primary-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--el-color-primary); /* Fallback */
+}
+
+.bg-primary-gradient {
+  background: var(--app-primary-gradient);
+}
+
+/* Element Plus 组件样式覆盖 */
+
+/* 卡片样式 */
+.el-card {
+  background: var(--app-card-bg) !important;
+  border: 1px solid var(--el-border-color-light) !important;
+  color: var(--el-text-color-primary) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: var(--el-box-shadow-light) !important;
+  border-radius: 16px !important;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 卡片光晕效果 */
+.el-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(74, 144, 164, 0.02) 0%, rgba(168, 153, 138, 0.01) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.el-card:hover::before {
+  background: linear-gradient(135deg, rgba(74, 144, 164, 0.04) 0%, rgba(168, 153, 138, 0.02) 100%);
+  transition: all 0.3s ease;
+}
+
+.el-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Buttons */
+.el-button--primary:not(.is-text) {
+  background: var(--app-primary-gradient) !important;
+  border: none !important;
+  color: #FFFFFF !important;
+  font-weight: 600;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(38, 166, 154, 0.2);
+  transition: all 0.3s ease;
+}
+
+.el-button--primary:not(.is-text):hover {
+  opacity: 0.95;
+  box-shadow: 0 6px 16px rgba(38, 166, 154, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Text Button with Primary Type */
+.el-button--primary.is-text {
+  background: transparent !important;
+  color: var(--el-color-primary) !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.el-button--primary.is-text:hover {
+  color: var(--el-color-primary-dark-2) !important;
+  background-color: var(--el-color-primary-light-9) !important;
+}
+
+.el-button.is-disabled,
+.el-button.is-disabled:hover,
+.el-button.is-disabled:focus {
+  background-color: var(--el-fill-color-disabled) !important;
+  border-color: var(--el-border-color-disabled) !important;
+  color: var(--el-text-color-disabled) !important;
+  cursor: not-allowed;
+  box-shadow: none !important;
+  background: none !important; /* Reset gradient */
+  background-color: var(--el-fill-color-disabled) !important;
+}
+
+/* 卡片操作按钮样式 */
+.card-actions .el-button,
+.agent-actions .el-button {
+  border: 1px solid transparent !important;
+  box-shadow: none !important;
+}
+
+.card-actions .el-button--primary,
+.agent-actions .el-button--primary,
+.btn-soft-primary {
+  background-color: var(--el-color-primary-light-9) !important;
+  color: var(--el-color-primary) !important;
+  border-color: var(--el-color-primary-light-5) !important;
+  background-image: none !important; /* Remove gradient */
+}
+.card-actions .el-button--primary:hover,
+.agent-actions .el-button--primary:hover,
+.btn-soft-primary:hover {
+  background-color: var(--el-color-primary-light-8) !important;
+  border-color: var(--el-color-primary-light-3) !important;
+  transform: translateY(-1px);
+}
+
+.card-actions .el-button--success,
+.agent-actions .el-button--success,
+.btn-soft-success {
+  background-color: var(--el-color-success-light-9) !important;
+  color: var(--el-color-success) !important;
+  border-color: var(--el-color-success-light-5) !important;
+}
+.card-actions .el-button--success:hover,
+.agent-actions .el-button--success:hover,
+.btn-soft-success:hover {
+  background-color: var(--el-color-success-light-8) !important;
+  border-color: var(--el-color-success-light-3) !important;
+  transform: translateY(-1px);
+}
+
+.card-actions .el-button--warning,
+.agent-actions .el-button--warning,
+.btn-soft-warning {
+  background-color: var(--el-color-warning-light-9) !important;
+  color: var(--el-color-warning) !important;
+  border-color: var(--el-color-warning-light-5) !important;
+}
+.card-actions .el-button--warning:hover,
+.agent-actions .el-button--warning:hover,
+.btn-soft-warning:hover {
+  background-color: var(--el-color-warning-light-8) !important;
+  border-color: var(--el-color-warning-light-3) !important;
+  transform: translateY(-1px);
+}
+
+.card-actions .el-button--danger,
+.agent-actions .el-button--danger,
+.btn-soft-danger {
+  background-color: var(--el-color-danger-light-9) !important;
+  color: var(--el-color-danger) !important;
+  border-color: var(--el-color-danger-light-5) !important;
+}
+.card-actions .el-button--danger:hover,
+.agent-actions .el-button--danger:hover,
+.btn-soft-danger:hover {
+  background-color: var(--el-color-danger-light-8) !important;
+  border-color: var(--el-color-danger-light-3) !important;
+  transform: translateY(-1px);
+}
+
+/* Default/Info button in card actions */
+.card-actions .el-button--default,
+.card-actions .el-button--info {
+  background-color: var(--el-fill-color-light) !important;
+  color: var(--el-text-color-regular) !important;
+  border-color: var(--el-border-color-light) !important;
+}
+.card-actions .el-button--default:hover,
+.card-actions .el-button--info:hover {
+  background-color: var(--el-fill-color) !important;
+  color: var(--el-color-primary) !important;
+  border-color: var(--el-color-primary-light-5) !important;
+  transform: translateY(-1px);
+}
+
+/* Inputs */
+.el-input__wrapper, .el-textarea__inner {
+  background-color: #FFFFFF !important;
+  box-shadow: 0 0 0 1px var(--el-border-color) inset !important;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.el-input__inner {
+  color: var(--el-text-color-primary) !important;
+}
+
+/* Input focus state */
+.el-input__wrapper.is-focus {
+  box-shadow: 0 0 0 1px var(--el-color-primary) inset !important;
+}
+
+.el-input.is-disabled .el-input__wrapper {
+  background-color: var(--el-fill-color-disabled) !important;
+  box-shadow: none !important;
+  border: 1px solid var(--el-border-color-disabled) !important;
+}
+
+.el-input.is-disabled .el-input__inner {
+  color: var(--el-text-color-disabled) !important;
+  -webkit-text-fill-color: var(--el-text-color-disabled) !important;
+}
+
+/* Tables */
+.el-table {
+  background-color: transparent !important;
+  color: var(--el-text-color-primary) !important;
+  --el-table-row-hover-bg-color: var(--el-color-primary-light-9) !important;
+  --el-table-header-bg-color: rgba(245, 247, 250, 0.8) !important;
+  --el-table-border-color: var(--el-border-color-light) !important;
+  --el-table-bg-color: transparent !important;
+  --el-table-tr-bg-color: transparent !important;
+}
+
+.el-table th.el-table__cell {
+  background-color: var(--el-table-header-bg-color) !important;
+  color: var(--el-text-color-regular) !important;
+  font-weight: 600;
+}
+
+.el-table td.el-table__cell {
+  border-bottom: 1px solid var(--el-border-color-light) !important;
+}
+
+/* Dialogs */
+.el-dialog {
+  background-color: var(--el-bg-color) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--el-box-shadow) !important;
+}
+
+.el-dialog__title {
+  color: var(--el-text-color-primary) !important;
+  font-weight: 600;
+}
+
+.el-dialog__body {
+  color: var(--el-text-color-regular) !important;
+}
+
+/* Pagination */
+.el-pagination {
+  --el-pagination-bg-color: transparent !important;
+  --el-pagination-button-bg-color: #FFFFFF !important;
+  --el-pagination-hover-color: var(--el-color-primary) !important;
+  --el-pagination-text-color: var(--el-text-color-regular) !important;
+}
+
+.el-pagination .btn-prev, .el-pagination .btn-next, .el-pagination button:disabled {
+  background-color: #FFFFFF !important;
+  color: var(--el-text-color-regular) !important;
+  border: 1px solid var(--el-border-color-light);
+  border-radius: 4px;
+}
+
+.el-pager li {
+  background-color: #FFFFFF !important;
+  color: var(--el-text-color-regular) !important;
+  border: 1px solid var(--el-border-color-light);
+  border-radius: 4px;
+  margin: 0 2px;
+  font-weight: normal;
+}
+
+.el-pager li.is-active {
+  background-color: var(--el-color-primary) !important;
+  color: #FFFFFF !important;
+  border-color: var(--el-color-primary) !important;
+  font-weight: 600;
+}
+
+/* Dropdowns */
+.el-dropdown-menu, .el-select-dropdown {
+  background-color: var(--el-bg-color) !important;
+  border: 1px solid var(--el-border-color-light) !important;
+  box-shadow: var(--el-box-shadow-light) !important;
+  border-radius: 8px !important;
+}
+
+.el-dropdown-menu__item {
+  color: var(--el-text-color-regular) !important;
+}
+
+.el-dropdown-menu__item:hover {
+  background-color: var(--el-color-primary-light-9) !important;
+  color: var(--el-color-primary) !important;
+}
+
+.el-dropdown-menu__item--divided {
+  border-top-color: var(--el-border-color-light) !important;
+}
+
+/* Select Options */
+.el-select-dropdown__item {
+  color: var(--el-text-color-regular) !important;
+  background-color: transparent !important;
+}
+
+.el-select-dropdown__item.selected {
+  color: var(--el-color-primary) !important;
+  background-color: var(--el-color-primary-light-9) !important;
+  font-weight: 600;
+}
+
+.el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
+  background-color: var(--el-color-primary-light-9) !important;
+  color: var(--el-color-primary) !important;
+}
