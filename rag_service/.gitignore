@@ -36,9 +36,11 @@ __pycache__/
 # ============================
 .env
 .env.local
-.env.dev
-.env.prod
 .env.*.local
+
+# 允许上传的环境变量文件
+!.env.dev
+!.env.prod
 
 # ============================
 # IDE 配置
