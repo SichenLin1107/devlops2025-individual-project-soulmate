@@ -16,8 +16,7 @@
 
 ## 📖 目录
 
-- [一键启动](#-一键启动)
-- [部署指南](#-部署指南开发环境--生产环境)
+- [部署指南](#-部署指南)
 - [项目简介](#-项目简介)
 - [功能特性](#-功能特性详解)
 - [技术架构](#-系统架构)
@@ -29,232 +28,99 @@
 
 ---
 
-## 🚀 一键启动
+## 🚀 部署指南
 
 > **前置要求**：已安装 [Docker Desktop](https://www.docker.com/products/docker-desktop/)（Windows/Mac）或 Docker Engine + Docker Compose v2.0+
->
-> **系统资源**：建议 4GB+ 内存
 
-### Windows 用户（开发环境）
-
-```powershell
-# 1. 进入部署目录
-cd deploy_soulmate
-
-# 2. 创建配置文件
-copy env.dev.example .env.dev
-
-# 3. 一键启动所有服务（首次启动约需5-10分钟）
-docker compose -f docker-compose-dev.yml --env-file .env.dev up -d --build
-```
-
-### Linux / macOS 用户（开发环境）
+### 开发环境
 
 ```bash
 cd deploy_soulmate
-cp env.dev.example .env.dev
-make dev    # 使用 Makefile 一键启动
+
+# 1. 创建环境变量文件
+cp env.dev.example .env.dev          # Linux/macOS
+copy env.dev.example .env.dev        # Windows
+
+# 2. 启动服务
+make dev                             # Linux/macOS
+docker compose -f docker-compose-dev.yml --env-file .env.dev up -d --build  # Windows
+
+# 3. 查看状态
+docker ps --filter "name=soulmate-dev"
 ```
 
-### ✅ 启动成功后访问（开发环境）
-
-| 服务 | 地址 | 说明 |
-|:---:|:---:|:---:|
-| **🖥️ 前端页面** | http://localhost:3000 | 主应用入口 |
-| **📡 后端 API** | http://localhost:8081 | RESTful API |
-| **📚 Swagger 文档** | http://localhost:8081/swagger-ui.html | API 在线文档 |
-| **🔍 RAG 服务文档** | http://localhost:8000/docs | FastAPI 文档 |
-| **🗄️ phpMyAdmin** | http://localhost:8082 | 数据库管理（root / dev123456） |
-
-### 🔑 测试账号
-
-| 角色 | 用户名 | 密码 | 权限说明 |
-|:---:|:---:|:---:|:---|
-| 超级管理员 | `superadmin` | `admin123` | 全部功能 + 用户管理 |
-| 管理员 | `admin` | `admin123` | 智能体/知识库/工作流/模型/敏感词管理 |
-| 普通用户 | `zhangsan_996` | `user123` | 对话、历史记录、个人中心 |
-
----
-
-## 📦 部署指南（开发环境 / 生产环境）
-
-系统提供 **开发环境** 和 **生产环境** 两套部署配置，区别如下：
-
-### 环境对比
-
-| 配置项 | 开发环境 (dev) | 生产环境 (prod) |
-|:---|:---:|:---:|
-| **前端端口** | 3000 | 80 |
-| **后端端口** | 8081 | 8080 |
-| **RAG 服务端口** | 8000 | 8001 |
-| **MySQL 端口** | 3307 | 3306 |
-| **phpMyAdmin 端口** | 8082 | 8083 |
-| **Swagger 文档** | ✅ 开启 | ❌ 关闭 |
-| **调试模式** | ✅ 开启 | ❌ 关闭 |
-| **日志级别** | debug | info |
-| **热重载** | ✅ 支持 | ❌ 不支持 |
-
----
-
-### 🔧 开发环境部署
-
-适用于**功能开发、调试测试**，支持热重载和详细日志。
-
-#### Windows
-
-```powershell
-cd deploy_soulmate
-
-# 创建配置文件
-copy env.dev.example .env.dev
-
-# 启动服务
-docker compose -f docker-compose-dev.yml --env-file .env.dev up -d --build
-```
-
-#### Linux / macOS
-
-```bash
-cd deploy_soulmate
-cp env.dev.example .env.dev
-make dev    # 使用 Makefile 一键启动
-```
-
-#### 开发环境访问地址
+> ⏱️ 首次部署约 3-5 分钟，后续启动约 1-2 分钟
 
 | 服务 | 地址 |
 |:---|:---|
 | 前端页面 | http://localhost:3000 |
 | 后端 API | http://localhost:8081 |
 | Swagger 文档 | http://localhost:8081/swagger-ui.html |
-| RAG 服务文档 | http://localhost:8000/docs |
+| RAG 服务 | http://localhost:8000/docs |
 | phpMyAdmin | http://localhost:8082 |
-| MySQL | localhost:3307 (root / dev123456) |
-
-#### 停止开发环境
-
-```bash
-# Windows
-docker compose -f docker-compose-dev.yml --env-file .env.dev down
-
-# Linux / macOS
-make stop-dev
-```
 
 ---
 
-### 🚀 生产环境部署
-
-适用于**正式部署上线**，优化性能和安全性。
-
-#### Windows
-
-```powershell
-cd deploy_soulmate
-
-# 创建配置文件
-copy env.prod.example .env.prod
-
-# ⚠️ 重要：编辑 .env.prod，修改以下配置
-# - MYSQL_ROOT_PASSWORD: 设置强密码（替换 change_this_in_production）
-# - JWT_SECRET: 设置 32 位以上随机字符串（替换 change_this_jwt_secret_in_production）
-
-# 启动服务
-docker compose -f docker-compose-prod.yml --env-file .env.prod up -d --build
-```
-
-#### Linux / macOS
+### 生产环境
 
 ```bash
 cd deploy_soulmate
-cp env.prod.example .env.prod
 
-# ⚠️ 编辑 .env.prod，修改密码和密钥
-vim .env.prod  # 或使用其他编辑器
+# 1. 创建环境变量文件
+cp env.prod.example .env.prod        # Linux/macOS
+copy env.prod.example .env.prod      # Windows
 
-make prod    # 使用 Makefile 一键启动
+# 2. ⚠️ 修改 .env.prod 中的敏感配置
+#    - MYSQL_ROOT_PASSWORD
+#    - JWT_SECRET
+
+# 3. 启动服务
+make prod                            # Linux/macOS
+docker compose -f docker-compose-prod.yml --env-file .env.prod up -d --build  # Windows
+
+# 4. 查看状态
+docker ps --filter "name=soulmate-"
 ```
-
-#### 生产环境访问地址
 
 | 服务 | 地址 |
 |:---|:---|
-| 前端页面 | http://localhost (80端口) |
+| 前端页面 | http://localhost |
 | 后端 API | http://localhost:8080 |
 | RAG 服务 | http://localhost:8001 |
 | phpMyAdmin | http://localhost:8083 |
-| MySQL | localhost:3306 |
-
-> ⚠️ **安全提示**：生产环境部署后请立即修改默认测试账号密码！
-
-#### 停止生产环境
-
-```bash
-# Windows
-docker compose -f docker-compose-prod.yml --env-file .env.prod down
-
-# Linux / macOS
-make stop-prod
-```
 
 ---
 
-### 📋 常用运维命令
+### 测试账号
 
-#### Linux / macOS（使用 Makefile）
+| 角色 | 用户名 | 密码 |
+|:---:|:---:|:---:|
+| 超级管理员 | `superadmin` | `admin123` |
+| 管理员 | `admin` | `admin123` |
+| 普通用户 | `zhangsan_996` | `user123` |
 
-```bash
-make dev          # 启动开发环境
-make prod         # 启动生产环境
-make stop-dev     # 停止开发环境
-make stop-prod    # 停止生产环境
-make logs-dev     # 查看开发环境日志
-make logs-prod    # 查看生产环境日志
-make help         # 查看所有可用命令
-```
+---
 
-#### Windows / 通用命令
+### 常用命令
 
-```bash
-# ========== 开发环境 ==========
-# 查看容器状态
-docker compose -f docker-compose-dev.yml --env-file .env.dev ps
+| 命令 | 说明 |
+|:---|:---|
+| `make dev` / `make prod` | 启动开发/生产环境 |
+| `make stop-dev` / `make stop-prod` | 停止开发/生产环境 |
+| `make logs-dev` / `make logs-prod` | 查看日志 |
+| `docker logs <容器名>` | 查看单个服务日志 |
 
-# 查看实时日志
-docker compose -f docker-compose-dev.yml --env-file .env.dev logs -f
+---
 
-# 查看单个服务日志
-docker logs -f soulmate-dev-backend
-docker logs -f soulmate-dev-rag-service
+### 端口配置
 
-# 重启单个服务
-docker compose -f docker-compose-dev.yml --env-file .env.dev restart backend
-
-# 完全清理（包括数据卷）
-docker compose -f docker-compose-dev.yml --env-file .env.dev down -v
-
-# ========== 生产环境 ==========
-# 查看容器状态
-docker compose -f docker-compose-prod.yml --env-file .env.prod ps
-
-# 查看实时日志
-docker compose -f docker-compose-prod.yml --env-file .env.prod logs -f
-
-# 完全清理
-docker compose -f docker-compose-prod.yml --env-file .env.prod down -v
-```
-
-### 🔍 健康检查
-
-```bash
-# 开发环境
-curl http://localhost:8081/api/v1/health
-curl http://localhost:8000/api/rag/health
-
-# 生产环境
-curl http://localhost:8080/api/v1/health
-curl http://localhost:8001/api/rag/health
-```
+| 服务 | 开发环境 | 生产环境 |
+|:---|:---:|:---:|
+| Frontend | 3000 | 80 |
+| Backend | 8081 | 8080 |
+| RAG Service | 8000 | 8001 |
+| MySQL | 3307 | 3306 |
+| phpMyAdmin | 8082 | 8083 |
 
 ---
 

@@ -6,9 +6,9 @@
 help:
 	@echo "SoulMate 心伴 - 简化部署命令："
 	@echo ""
-	@echo "  make dev         - 启动开发环境 (deploy.dev.sh)"
-	@echo "  make prod        - 启动生产环境 (deploy.prod.sh)"
-	@echo "  make dev-rag-only - 只启动 MySQL + phpMyAdmin + RAG 服务"
+	@echo "  make dev         - 一键部署开发环境 (deploy.dev.sh)"
+	@echo "  make prod        - 一键部署生产环境 (deploy.prod.sh)"
+	@echo "  make dev-rag-only - 只部署 MySQL + phpMyAdmin + RAG 服务"
 	@echo "  make stop-dev    - 停止开发环境容器"
 	@echo "  make stop-prod   - 停止生产环境容器"
 	@echo "  make stop        - 停止所有容器"
@@ -16,11 +16,11 @@ help:
 	@echo "  make logs-prod   - 查看生产环境日志"
 	@echo ""
 
-# 启动开发环境
+# 一键部署开发环境
 dev:
 	@bash deploy.dev.sh
 
-# 启动生产环境
+# 一键部署生产环境
 prod:
 	@bash deploy.prod.sh
 

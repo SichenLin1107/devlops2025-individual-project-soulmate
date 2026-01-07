@@ -3,6 +3,7 @@ package com.soulmate.module.auth.controller;
 import com.soulmate.common.ApiResponse;
 import com.soulmate.module.auth.dto.*;
 import com.soulmate.module.auth.service.AuthService;
+import com.soulmate.module.user.dto.UserVO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
