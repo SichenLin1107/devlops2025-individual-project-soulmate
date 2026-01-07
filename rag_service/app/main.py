@@ -1,13 +1,15 @@
 """
 RAG 服务主应用
 """
+import os
+import sys
+
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 from app.config import settings
 from app.api import rag
-import sys
-import os
-import uvicorn
 
 # 创建 FastAPI 应用
 app = FastAPI(

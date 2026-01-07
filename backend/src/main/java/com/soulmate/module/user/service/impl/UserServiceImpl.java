@@ -10,15 +10,11 @@ import com.soulmate.module.user.entity.SysUser;
 import com.soulmate.module.user.mapper.SysUserMapper;
 import com.soulmate.module.user.service.UserService;
 import com.soulmate.security.UserContext;
-import com.soulmate.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,9 +28,6 @@ public class UserServiceImpl implements UserService {
     
     private final SysUserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    
-    @Value("${file.upload.avatar-path:uploads/avatars}")
-    private String avatarUploadPath;
     
     /**
      * 验证用户是否存在，不存在则抛出异常
@@ -167,37 +160,4 @@ public class UserServiceImpl implements UserService {
         userMapper.updatePassword(userId, newPassword);
         log.info("密码修改成功: userId={}", userId);
     }
-    
-    // 头像上传功能已禁用
-    // @Override
-    // public String uploadAvatar(MultipartFile file) {
-    //     String userId = UserContext.getUserId();
-    //     SysUser user = validateUserExists(userId);
-    //     
-    //     try {
-    //         String absolutePath = new File(avatarUploadPath).getAbsolutePath();
-    //         String avatarUrl = FileUtil.uploadAvatar(file, absolutePath);
-    //         
-    //         if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {
-    //             String oldAvatarPath = user.getAvatar();
-    //             if (oldAvatarPath.startsWith("/uploads/avatars/")) {
-    //                 String oldFileName = oldAvatarPath.substring("/uploads/avatars/".length());
-    //                 String oldFilePath = new File(absolutePath, oldFileName).getAbsolutePath();
-    //                 FileUtil.deleteFile(oldFilePath);
-    //             }
-    //         }
-    //         
-    //         user.setAvatar(avatarUrl);
-    //         userMapper.update(user);
-    //         
-    //         log.info("头像上传成功: userId={}, avatarUrl={}", userId, avatarUrl);
-    //         return avatarUrl;
-    //         
-    //     } catch (IllegalArgumentException e) {
-    //         throw new BusinessException(ErrorCode.PARAM_ERROR, e.getMessage());
-    //     } catch (Exception e) {
-    //         log.error("头像上传失败: userId={}", userId, e);
-    //         throw new BusinessException(ErrorCode.SYSTEM_ERROR, "头像上传失败: " + e.getMessage());
-    //     }
-    // }
 }

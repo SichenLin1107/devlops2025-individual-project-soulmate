@@ -64,4 +64,12 @@ public interface WorkflowService {
      * @return 关联的智能体数量
      */
     int countRelatedAgents(String id);
+    
+    /**
+     * 执行工作流（调试模式）
+     * @param id 工作流ID
+     * @param data 执行数据，包含 userInput 等
+     * @return 执行结果
+     */
+    Map<String, Object> executeWorkflow(String id, Map<String, Object> data);
 }

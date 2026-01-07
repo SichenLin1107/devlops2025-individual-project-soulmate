@@ -83,15 +83,11 @@ public class RequireRoleAspect {
      * 获取角色显示名称
      */
     private String getRoleDisplayName(String role) {
-        switch (role) {
-            case "superadmin":
-                return "超级管理员";
-            case "admin":
-                return "管理员";
-            case "user":
-                return "用户";
-            default:
-                return role;
-        }
+        return switch (role) {
+            case "superadmin" -> "超级管理员";
+            case "admin" -> "管理员";
+            case "user" -> "用户";
+            default -> role;
+        };
     }
 }

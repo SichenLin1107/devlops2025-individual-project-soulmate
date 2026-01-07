@@ -2,8 +2,11 @@ package com.soulmate.module.auth.service.impl;
 
 import com.soulmate.common.BusinessException;
 import com.soulmate.common.ErrorCode;
-import com.soulmate.module.auth.dto.*;
+import com.soulmate.module.auth.dto.LoginRequest;
+import com.soulmate.module.auth.dto.LoginResponse;
+import com.soulmate.module.auth.dto.RegisterRequest;
 import com.soulmate.module.auth.service.AuthService;
+import com.soulmate.module.user.dto.UserVO;
 import com.soulmate.module.user.entity.SysUser;
 import com.soulmate.module.user.mapper.SysUserMapper;
 import com.soulmate.security.JwtUtil;
