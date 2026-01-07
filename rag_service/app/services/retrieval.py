@@ -2,12 +2,14 @@
 检索服务 - ChromaDB 向量存储和检索
 """
 import os
-from typing import List, Dict, Any, Optional
+import logging
+from typing import List, Dict, Any
+
 import chromadb
 from chromadb.config import Settings
+
 from app.config import settings
 from app.services.embedding import embedding_service
-import logging
 
 logger = logging.getLogger(__name__)
 

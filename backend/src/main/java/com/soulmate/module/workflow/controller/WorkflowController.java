@@ -127,4 +127,17 @@ public class WorkflowController {
         Map<String, Object> result = workflowService.validateWorkflow(nodesConfig);
         return ApiResponse.success(result);
     }
+    
+    /**
+     * 执行工作流（调试模式）
+     * POST /api/v1/workflows/{id}/execute
+     */
+    @PostMapping("/{id}/execute")
+    @RequireRole("admin")
+    public ApiResponse<Map<String, Object>> executeWorkflow(
+            @PathVariable String id,
+            @RequestBody Map<String, Object> data) {
+        Map<String, Object> result = workflowService.executeWorkflow(id, data);
+        return ApiResponse.success(result);
+    }
 }

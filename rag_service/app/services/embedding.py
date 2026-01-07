@@ -1,11 +1,13 @@
 """
 向量化服务 - 使用智谱 AI Embedding API
 """
+import logging
 from typing import List, Optional
+
 from openai import OpenAI
+
 from app.config import settings
 from app.db import db
-import logging
 
 logger = logging.getLogger(__name__)
 

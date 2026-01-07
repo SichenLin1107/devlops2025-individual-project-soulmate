@@ -10,6 +10,10 @@ import com.soulmate.module.workflow.dto.WorkflowVO;
 import com.soulmate.module.workflow.entity.AiWorkflow;
 import com.soulmate.module.workflow.mapper.AiWorkflowMapper;
 import com.soulmate.module.workflow.service.WorkflowService;
+import com.soulmate.module.workflow.engine.WorkflowEngine;
+import com.soulmate.module.workflow.dto.NodesConfig;
+import com.soulmate.module.workflow.dto.WorkflowContext;
+import com.soulmate.module.workflow.dto.WorkflowResult;
 import com.soulmate.security.UserContext;
 import com.soulmate.util.IdGenerator;
 import com.soulmate.util.JsonUtil;
@@ -35,6 +39,7 @@ public class WorkflowServiceImpl implements WorkflowService {
     
     private final AiWorkflowMapper workflowMapper;
     private final AiAgentMapper agentMapper;
+    private final WorkflowEngine workflowEngine;
     
     @Override
     public PageResult<WorkflowVO> listWorkflows(int page, int size, String keyword, Integer isActive) {
@@ -696,6 +701,60 @@ public class WorkflowServiceImpl implements WorkflowService {
         
         boolean valid = errors.isEmpty();
         return Map.of("valid", valid, "errors", errors, "warnings", warnings);
+    }
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> executeWorkflow(String id, Map<String, Object> data) {
+        // 1. 获取工作流
+        AiWorkflow workflow = workflowMapper.selectById(id);
+        if (workflow == null) {
+            throw new BusinessException(ErrorCode.WORKFLOW_NOT_FOUND);
+        }
+        
+        // 2. 检查工作流是否可用
+        if (workflow.getIsActive() != 1) {
+            throw new BusinessException(ErrorCode.WORKFLOW_NOT_FOUND, "工作流未启用");
+        }
+        
+        // 3. 解析节点配置
+        NodesConfig nodesConfig = JsonUtil.fromJson(workflow.getNodesConfig(), NodesConfig.class);
+        if (nodesConfig == null || nodesConfig.getNodes() == null || nodesConfig.getNodes().isEmpty()) {
+            throw new BusinessException(ErrorCode.PARAM_ERROR, "工作流配置无效");
+        }
+        
+        // 4. 构建执行上下文
+        String userInput = (String) data.getOrDefault("userInput", "");
+        Long sessionId = data.get("sessionId") != null ? Long.valueOf(data.get("sessionId").toString()) : null;
+        
+        WorkflowContext context = WorkflowContext.builder()
+                .userInput(userInput)
+                .sessionId(sessionId)
+                .agentId(null) // 调试模式不关联智能体
+                .build();
+        
+        // 5. 执行工作流
+        log.info("开始调试执行工作流: id={}, userInput={}", id, userInput);
+        WorkflowResult result = workflowEngine.execute(nodesConfig, context);
+        
+        // 6. 构建返回结果
+        Map<String, Object> response = new HashMap<>();
+        response.put("response", result.getResponse());
+        response.put("emotion", result.getEmotion());
+        response.put("isCrisis", result.getIsCrisis());
+        response.put("nodesExecuted", result.getNodesExecuted());
+        response.put("metadata", result.getMetadata());
+        
+        if (result.getTokenUsage() != null) {
+            Map<String, Object> tokenUsage = new HashMap<>();
+            tokenUsage.put("promptTokens", result.getTokenUsage().getPromptTokens());
+            tokenUsage.put("completionTokens", result.getTokenUsage().getCompletionTokens());
+            tokenUsage.put("totalTokens", result.getTokenUsage().getTotalTokens());
+            response.put("tokenUsage", tokenUsage);
+        }
+        
+        log.info("工作流调试执行完成: id={}, nodesExecuted={}", id, result.getNodesExecuted());
+        return response;
     }
 }
 

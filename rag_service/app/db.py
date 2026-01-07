@@ -2,10 +2,12 @@
 数据库连接工具
 用于从数据库读取API key等配置信息
 """
-import pymysql
-from typing import Optional, Dict
-from app.config import settings
 import logging
+from typing import Optional, Dict
+
+import pymysql
+
+from app.config import settings
 
 logger = logging.getLogger(__name__)
 

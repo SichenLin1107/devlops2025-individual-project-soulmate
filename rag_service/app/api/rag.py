@@ -1,13 +1,50 @@
 """
 RAG API 路由
 """
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
+
 from app.services.embedding import embedding_service
 from app.services.retrieval import retrieval_service
 
 router = APIRouter(prefix="/api/rag", tags=["RAG"])
+
+
+# ==================== 工具函数 ====================
+
+def parse_api_error(error_msg: str) -> Dict[str, Any]:
+    """
+    解析API错误类型，返回包含错误类型的详细信息
+    
+    Args:
+        error_msg: 原始错误消息
+        
+    Returns:
+        包含 message 和 error_type 的字典
+    """
+    error_msg_lower = error_msg.lower()
+    
+    if any(x in error_msg for x in ["401", "令牌", "验证"]) or \
+       any(x in error_msg_lower for x in ["authentication", "api key"]):
+        error_type = "AUTH_ERROR"
+    elif any(x in error_msg for x in ["402", "余额", "额度"]) or \
+         any(x in error_msg_lower for x in ["quota", "insufficient"]):
+        error_type = "QUOTA_ERROR"
+    elif any(x in error_msg for x in ["429", "频率"]) or \
+         any(x in error_msg_lower for x in ["rate", "too many"]):
+        error_type = "RATE_LIMIT"
+    elif "超时" in error_msg or "timeout" in error_msg_lower:
+        error_type = "TIMEOUT"
+    elif any(x in error_msg for x in ["连接"]) or \
+         any(x in error_msg_lower for x in ["connect", "network"]):
+        error_type = "CONNECTION_ERROR"
+    elif "model" in error_msg_lower and ("not found" in error_msg_lower or "不存在" in error_msg):
+        error_type = "MODEL_ERROR"
+    else:
+        error_type = "UNKNOWN"
+    
+    return {"message": error_msg, "error_type": error_type}
 
 
 # 请求模型
@@ -165,34 +202,12 @@ async def embed_text(request: EmbedRequest):
 
 @router.get("/health", response_model=HealthResponse)
 async def health_check():
-    """
-    健康检查接口
-    """
+    """健康检查接口"""
     return HealthResponse(
         status="healthy",
         service="RAG Service",
         version="1.0.0"
     )
-
-
-def parse_api_error(error_msg: str) -> dict:
-    """解析API错误类型，返回包含错误类型的详细信息"""
-    error_type = "UNKNOWN"
-    
-    if "401" in error_msg or "authentication" in error_msg.lower() or "api key" in error_msg.lower() or "令牌" in error_msg or "验证" in error_msg:
-        error_type = "AUTH_ERROR"
-    elif "402" in error_msg or "quota" in error_msg.lower() or "余额" in error_msg or "额度" in error_msg or "insufficient" in error_msg.lower():
-        error_type = "QUOTA_ERROR"
-    elif "429" in error_msg or "rate" in error_msg.lower() or "频率" in error_msg or "too many" in error_msg.lower():
-        error_type = "RATE_LIMIT"
-    elif "timeout" in error_msg.lower() or "超时" in error_msg:
-        error_type = "TIMEOUT"
-    elif "connect" in error_msg.lower() or "连接" in error_msg or "network" in error_msg.lower():
-        error_type = "CONNECTION_ERROR"
-    elif "model" in error_msg.lower() and ("not found" in error_msg.lower() or "不存在" in error_msg):
-        error_type = "MODEL_ERROR"
-    
-    return {"message": error_msg, "error_type": error_type}
 
 
 @router.post("/index", response_model=IndexResponse)
@@ -223,26 +238,6 @@ async def index_document(request: IndexRequest):
     except Exception as e:
         error_detail = parse_api_error(f"索引失败: {str(e)}")
         raise HTTPException(status_code=500, detail=error_detail)
-
-
-def parse_api_error(error_msg: str) -> dict:
-    """解析API错误类型，返回包含错误类型的详细信息"""
-    error_type = "UNKNOWN"
-    
-    if "401" in error_msg or "authentication" in error_msg.lower() or "api key" in error_msg.lower() or "令牌" in error_msg or "验证" in error_msg:
-        error_type = "AUTH_ERROR"
-    elif "402" in error_msg or "quota" in error_msg.lower() or "余额" in error_msg or "额度" in error_msg or "insufficient" in error_msg.lower():
-        error_type = "QUOTA_ERROR"
-    elif "429" in error_msg or "rate" in error_msg.lower() or "频率" in error_msg or "too many" in error_msg.lower():
-        error_type = "RATE_LIMIT"
-    elif "timeout" in error_msg.lower() or "超时" in error_msg:
-        error_type = "TIMEOUT"
-    elif "connect" in error_msg.lower() or "连接" in error_msg or "network" in error_msg.lower():
-        error_type = "CONNECTION_ERROR"
-    elif "model" in error_msg.lower() and ("not found" in error_msg.lower() or "不存在" in error_msg):
-        error_type = "MODEL_ERROR"
-    
-    return {"message": error_msg, "error_type": error_type}
 
 
 @router.post("/search", response_model=SearchResponse)

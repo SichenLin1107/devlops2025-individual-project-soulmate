@@ -140,5 +140,12 @@ public final class JsonUtil {
         }
         return MAPPER.convertValue(map, clazz);
     }
+
+    /**
+     * JSON字符串转对象（parse的别名，提供更直观的方法名）
+     */
+    public static <T> T fromJson(String json, Class<T> clazz) {
+        return parse(json, clazz);
+    }
 }
 

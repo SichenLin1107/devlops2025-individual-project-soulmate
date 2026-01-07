@@ -3,7 +3,7 @@ package com.soulmate.module.auth.service;
 import com.soulmate.module.auth.dto.LoginRequest;
 import com.soulmate.module.auth.dto.LoginResponse;
 import com.soulmate.module.auth.dto.RegisterRequest;
-import com.soulmate.module.auth.dto.UserVO;
+import com.soulmate.module.user.dto.UserVO;
 
 /**
  * 认证服务接口

@@ -18,6 +18,4 @@ public interface UserService {
     UserVO getProfile();
     void updateProfile(UserUpdateRequest request);
     void changePassword(ChangePasswordRequest request);
-    // 头像上传功能已禁用
-    // String uploadAvatar(org.springframework.web.multipart.MultipartFile file);
 }
