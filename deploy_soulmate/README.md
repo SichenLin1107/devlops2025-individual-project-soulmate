@@ -58,7 +58,7 @@ make prod
 bash deploy.prod.sh
 
 # 4. 查看服务启动状态
-docker ps --filter "name=soulmate-"
+docker ps --filter "name=soulmate"
 ```
 
 > ⏱️ **预计等待时间**：首次部署约 3-5 分钟（需构建镜像），后续启动约 1-2 分钟
