@@ -416,13 +416,15 @@ curl http://localhost:8001/api/rag/health
 
 **已支持的模型**：
 
-| 提供商 | 模型 | 类型 |
-|:---|:---|:---|
-| DeepSeek | deepseek-chat | Chat |
-| 智谱 AI | glm-4-flash, glm-4 | Chat |
-| 智谱 AI | embedding-2 | Embedding |
-| 通义千问 | qwen-turbo, qwen-plus | Chat |
-| 豆包 | doubao-pro-32k | Chat |
+| 提供商 | 模型 | 类型 | API Key 状态 |
+|:---|:---|:---|:---:|
+| DeepSeek | deepseek-chat | Chat | ✅ 已内置 |
+| 智谱 AI | glm-4-flash, glm-4 | Chat | ✅ 已内置 |
+| 智谱 AI | embedding-2 | Embedding | ✅ 已内置 |
+| 通义千问 | qwen-turbo, qwen-plus | Chat | ✅ 已内置 |
+| 豆包 | doubao-pro-32k | Chat | ❌ 需自行配置 |
+
+> 💡 **说明**：DeepSeek、智谱 AI、通义千问的 API Key 已预置在数据库中，部署后可直接使用。豆包需要在管理后台「模型管理」中自行配置 API Key。
 
 #### 🚫 敏感词管理（`/admin/sensitive-words`）
 
