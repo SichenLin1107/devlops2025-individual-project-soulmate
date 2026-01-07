@@ -79,7 +79,7 @@ make prod                            # Linux/macOS
 docker compose -f docker-compose-prod.yml --env-file .env.prod up -d --build  # Windows
 
 # 4. 查看状态
-docker ps --filter "name=soulmate-"
+docker ps --filter "name=soulmate"
 ```
 
 | 服务 | 地址 |
